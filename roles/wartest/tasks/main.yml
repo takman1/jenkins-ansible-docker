@@ -10,7 +10,8 @@
   pip:
     name:
       - docker
-      - docker-compose==1.9.0
+      - docker-compose
+#      - docker-compose==1.9.0
 
 - name: pip list
   raw: pip list
