@@ -17,6 +17,10 @@
   raw: pip list
 
 - name: run container
+  docker_login:
+    password: "{{ password }}"
+#    registry_url: "{{ registry}}"
+    username: "{{ username }}"
   docker_container:
     name: wartest
     image: "{{ image }}"
