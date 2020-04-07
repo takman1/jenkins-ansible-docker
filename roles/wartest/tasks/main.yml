@@ -16,7 +16,7 @@
 - name: pip list
   raw: pip list
 
-- name: install docker-ce
+- name: install docker-ce prerequities
   apt:
     name:
       - apt-transport-https
@@ -28,15 +28,13 @@
     state: present
 
   shell:
+    cmd: |
+      curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -"
+      add-apt-repository \"deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\"
     args:
       executable: /bin/bash
-    cmd: "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -"
 
-  shell:
-    args:
-      executable: /bin/bash
-    cmd: "sudo add-apt-repository \"deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\""
-
+- name: install docker-ce
   apt:
     name:
       - docker-ce
