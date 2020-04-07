@@ -16,11 +16,13 @@
 - name: pip list
   raw: pip list
 
-- name: run container
+- name: configure registry
   docker_login:
     password: "{{ password }}"
-#    registry_url: "{{ registry}}"
+    registry_url: "{{ registry }}"
     username: "{{ username }}"
+  
+- name: run container
   docker_container:
     name: wartest
     image: "{{ image }}"
