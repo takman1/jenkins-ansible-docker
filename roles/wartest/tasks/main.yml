@@ -16,6 +16,11 @@
 - name: pip list
   raw: pip list
 
+- name: install docker-ce
+  apt:
+    name: docker-ce
+    state: present
+
 - name: configure registry
   docker_login:
     password: "{{ password }}"
