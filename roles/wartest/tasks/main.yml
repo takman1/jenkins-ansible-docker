@@ -3,18 +3,11 @@
     name: python-pip
     state: present
 
-- name: pip list
-  raw: pip list
-
 - name: pip install docker-py
   pip:
     name:
       - docker
       - docker-compose
-#      - docker-compose==1.9.0
-
-- name: pip list
-  raw: pip list
 
 - name: install docker-ce prerequities
   apt:
@@ -26,13 +19,16 @@
       - software-properties-common
     update_cache: yes
     state: present
+
+- name: check if docker-ce repo already added
+  shell: grep 'https://download.docker.com' /etc/apt/ -R >/dev/null
+  register: docker_ce_repo_exists
+
 - name: add docker-ce repo
-  shell:
-    cmd: |
-      curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
-      add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable";
-  args:
-    executable: /bin/bash
+  shell: |
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+    add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable";
+  when: docker_ce_repo_exists | failed
 
 - name: install docker-ce
   apt:
@@ -55,4 +51,5 @@
     image: "{{ image }}"
     ports: 50080:8080
     state: started
- 
+
+
